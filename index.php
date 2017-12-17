@@ -3,8 +3,11 @@ require_once 'vendor/autoload.php';
 
 $app = new \Slim\Slim();
 
-$app->get("/hola/:nombre", function($nombre){
-    print_r("hola " . $nombre);
+$app->get("/hola/:nombre", function($nombre) use ($app){
+    print_r("hola " . $nombre. "<br>");
+    // En vez de params podremos utiliar GET, POST y PUT para saber que hay ahí
+    // Y podemos ser específicos dentro del params
+    var_dump($app->request->params("hola"));
 });
 
 // Como hacer un middleware
