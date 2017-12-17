@@ -42,7 +42,24 @@
 									"</tr>"
 								);
 							}
-						})
+						});
+
+						// BORRAR
+						$(".delete").unbind("click").click(function () {
+							$.ajax({
+								// .data() -> sacar el id
+								url: "http://localhost/slim/api.php/productos/" + $(this).data("producto"),
+								type: "DELETE",
+								success: function (response) {
+									// Imprimir en la tabla los datos de los productos
+									$('.table').html("<tr><td>ID</td><td>Nombre</td><td>Descripción</td><td>Valor</td><td>Eliminar</td><td>Editar</td></tr>");
+									getProductos();
+									$("#form").attr("data-producto","0");
+									// Limpiar los campos del form
+									$('#form')[0].reset();
+								}
+							});
+						});
 					}
 				});
 			};
@@ -60,7 +77,7 @@
 						data: {
 							name: $("#name_form").val(),
 							description: $("#description_form").val(),
-							price: $("#price_form").val() 
+							price: $("#price_form").val()
 						},
 						success: function (response) {
 							// Imprimir en la tabla los datos de los productos
