@@ -37,7 +37,7 @@ $app->group("/api", function() use ($app) {
     $app->group("/ejemplo", function() use ($app) {
         $app->get("/hola/:nombre", function($nombre){
             print_r("hola " . $nombre);
-        });
+        })->name("hola");
 
         $app->get("/apellido/:apellido", function($apellido){
             print_r("Tu apellido es: " . $apellido);
@@ -45,7 +45,13 @@ $app->group("/api", function() use ($app) {
 
         // Hacer redirecciones
         $app->get("/enviame-a-hola", function() use ($app) {
-            $app->redirect("hola/Diego");
+            // $app->redirect("hola/Diego");
+
+            // urlFor es darle nombre a una ruta y usarla como si fuera var
+            // urlFor es para sacar la ruta completa de donde se ejecuta
+            $app->redirect($app->urlFor("hola", array(
+                "nombre" => "Diego"
+            )));
         });
     });
 });
