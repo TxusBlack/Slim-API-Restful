@@ -17,6 +17,7 @@
 
 	<script>
 		// Funcion para parsear el json para poder recorrer los datos
+		// Se vuelve a reescribir la función por problemas de compatibilidad
 		JSON.parse = JSON.parse || function (str) {
 			if (str === "")
 				str = '""';
@@ -46,6 +47,33 @@
 				});
 			};
 			getProductos();
+
+			// GUARDAR
+			if ($('#form').data("producto") === 0) {
+				$("#form").submit(function (e) {
+					// Para que no envie el form sin pasar por ajax
+					e.preventDefault();
+
+					$.ajax({
+						url: "http://localhost/slim/api.php/productos",
+						type: "post",
+						data: {
+							name: $("#name_form").val(),
+							description: $("#description_form").val(),
+							price: $("#price_form").val() 
+						},
+						success: function (response) {
+							// Imprimir en la tabla los datos de los productos
+							$('.table').html("<tr><td>ID</td><td>Nombre</td><td>Descripción</td><td>Valor</td><td>Eliminar</td><td>Editar</td></tr>");
+							getProductos();
+							// Limpiar los campos del form
+							$('#form')[0].reset();
+						}
+					});
+
+					return false;
+				});
+			}
 		});
 	</script>
 </head>
@@ -67,11 +95,11 @@
 				</table>
 			</div>
 			<div class="col-lg-5 pull-right">
-				<form action="http://localhost/slim/api.php/productos" method="post" data-producto="0">
+				<form id="form" action="http://localhost/slim/api.php/productos" method="post" data-producto="0">
 					Nombre:
 					<input type="text" id="name_form" name="name" class="form-control">
 					<br> Descripción:
-					<textarea name="descriptio" id="description_form" class="form-control"></textarea>
+					<textarea name="description" id="description_form" class="form-control"></textarea>
 					<br> Precio:
 					<input type="text" id="price_form" name="price" class="form-control">
 					<br>
