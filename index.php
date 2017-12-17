@@ -31,4 +31,17 @@ $app->get("/pruebas/(:uno/(:dos))", 'pruebaMiddle', 'pruebaDos', function($uno=n
     "dos" => "[0-9]*"
 ));
 
+// Crear un grupo de rutas
+$app->group("/api", function() use ($app) {
+    $app->group("/ejemplo", function() use ($app) {
+        $app->get("/hola/:nombre", function($nombre){
+            print_r("hola " . $nombre);
+        });
+        
+        $app->get("/apellido/:apellido", function($apellido){
+            print_r("Tu apellido es: " . $apellido);
+        });
+    });
+});
+
 $app->run();
