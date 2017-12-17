@@ -32,14 +32,20 @@ $app->get("/pruebas/(:uno/(:dos))", 'pruebaMiddle', 'pruebaDos', function($uno=n
 ));
 
 // Crear un grupo de rutas
+// $uri = "slim/index.php/api/ejemplo/";
 $app->group("/api", function() use ($app) {
     $app->group("/ejemplo", function() use ($app) {
         $app->get("/hola/:nombre", function($nombre){
             print_r("hola " . $nombre);
         });
-        
+
         $app->get("/apellido/:apellido", function($apellido){
             print_r("Tu apellido es: " . $apellido);
+        });
+
+        // Hacer redirecciones
+        $app->get("/enviame-a-hola", function() use ($app) {
+            $app->redirect("hola/Diego");
         });
     });
 });
